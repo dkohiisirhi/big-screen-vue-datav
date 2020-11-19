@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="d-flex jc-center body-box">
-        <dv-scroll-board :config="config" style="width:7.375rem;height:4.28rem" />
+        <dv-scroll-board :config="config" style="width:8.775rem;height:4.28rem"/>
       </div>
     </div>
   </div>
@@ -21,33 +21,57 @@ export default {
   data() {
     return {
       config: {
-        header: ["组件", "分支", "覆盖率","ww","ww","ww","ww","ww"],
-        data: [
-          ["组件1", "dev-1", "<span  class='colorGrass'>↑75%</span>","ww","ww","ww","ww","ww"],
-          ["组件2", "dev-2", "<span  class='colorRed'>↓33%</span>","ww","ww","ww","ww","ww"],
-          ["组件3", "dev-3", "<span  class='colorGrass'>↑100%</span>","ww","ww","ww","ww","ww"],
-          ["组件4", "rea-1", "<span  class='colorGrass'>↑94%</span>","ww","ww","ww","ww","ww"],
-          ["组件5", "rea-2", "<span  class='colorGrass'>↑95%</span>","ww","ww","ww","ww","ww"],
-          ["组件6", "fix-2", "<span  class='colorGrass'>↑63%</span>","ww","ww","ww","ww","ww"],
-          ["组件7", "fix-4", "<span  class='colorGrass'>↑84%</span>","ww","ww","ww","ww","ww"],
-          ["组件8", "fix-7", "<span  class='colorRed'>↓46%</span>","ww","ww","ww","ww","ww"],
-          ["组件9", "dev-2", "<span  class='colorRed'>↓13%</span>","ww","ww","ww","ww","ww"],
-          ["组件10", "dev-9", "<span  class='colorGrass'>↑76%</span>","ww","ww","ww","ww","ww"]
-        ],
+        header: ["电梯编号", "楼层", "是否开门","运行速度","运行里程","开门次数","状态","层/站"],
         rowNum: 7, //表格行数
         headerHeight: 35,
         headerBGC: "#0f1325", //表头
         oddRowBGC: "#0f1325", //奇数行
         evenRowBGC: "#171c33", //偶数行
-        index: true,
-        columnWidth: [50,150,50,50,50,50,50,50],
-        align: ["center"]
-      }
+        columnWidth: [120,70,90,90,90,90,70,70],
+        align: ["center"],
+      },
+      path:"ws://www.cloudelevator.net:8085/websock/test",
+      socket:""
     };
   },
   components: {},
-  mounted() {},
-  methods: {}
+  created() {
+    this.init()
+  },
+  methods: {
+    init: function () {
+      if(typeof(WebSocket) === "undefined"){
+        alert("您的浏览器不支持socket")
+      }else{
+        // 实例化socket
+        this.socket = new WebSocket(this.path)
+        // 监听socket连接
+        this.socket.onopen = this.open
+        // 监听socket错误信息
+        this.socket.onerror = this.error
+        // 监听socket消息
+        this.socket.onmessage = this.getMessage
+      }
+    },
+    open: function () {
+      console.log("success")
+      setTimeout(()=> {
+        this.socket.send('check')
+      }, 1000);
+
+    },
+    error: function () {
+      console.log("连接错误")
+    },
+    getMessage: function(msg) {
+      let arr = new Array();
+      JSON.parse(msg.data).forEach(item=> arr.push([item.eleno,item.floor,item.isOpen==1?'开门':'关门',item.speed,item.runMileage,item.openNum,item.direction==1?'上行':item.direction==0?'平层':'下行',item.floorsStopsDoor]))
+      this.$set(this.config,"data",arr)
+    },
+    close: function () {
+      console.log("socket已经关闭")
+    }
+  }
 };
 </script>
 
