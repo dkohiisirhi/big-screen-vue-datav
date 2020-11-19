@@ -18,7 +18,7 @@
         <div class="item-box" v-for="(item,index) in numberData" :key="index">
           <div class="d-flex">
             <span class="coin">￥</span>
-            <dv-digital-flop :config="item.number" style="width:2.5rem;height:.625rem;" />
+            <dv-digital-flop :config="item.number" style="width:2.5rem;height:.625rem;"/>
           </div>
           <p class="text" style="text-align: center;">
             {{item.text}}

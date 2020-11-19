@@ -57,14 +57,9 @@
           <!-- 第三行数据 -->
           <div class="content-box">
             <div>
-              <dv-border-box-12>
-                <centerLeft1 />
-              </dv-border-box-12>
-            </div>
-            <div>
-              <dv-border-box-12>
-                <centerLeft2 />
-              </dv-border-box-12>
+              <dv-border-box-13>
+                <centerRight1 />
+              </dv-border-box-13>
             </div>
             <!-- 中间 -->
             <div>
@@ -75,9 +70,14 @@
 <!--              <centerRight2 />-->
 <!--            </div>-->
             <div>
-              <dv-border-box-13>
-                <centerRight1 />
-              </dv-border-box-13>
+              <dv-border-box-12>
+                <centerLeft1 />
+              </dv-border-box-12>
+            </div>
+            <div>
+              <dv-border-box-12>
+                <centerLeft2 />
+              </dv-border-box-12>
             </div>
           </div>
 

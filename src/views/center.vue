@@ -2,9 +2,9 @@
   <div id="center">
     <div class="up">
       <div class="bg-color-black item" v-for="item in titleItem" :key="item.title">
-        <p class="ml-3 colorBlue fw-b">{{item.title}}</p>
+        <p class="colorBlue fw-b" style="text-align: center">{{ item.title }}</p>
         <div>
-          <dv-digital-flop :config="item.number" style="width:1.25rem;height:.625rem;" />
+          <p class="colorBlue fw-b" style="font-size:.225rem;text-align: center">{{ item.number }}</p>
         </div>
       </div>
     </div>
@@ -13,20 +13,20 @@
         <span style="color:#5cd9e8">
           <icon name="align-left"></icon>
         </span>
-        <span class="fs-xl text mx-2 mb-1">年度负责人组件达标榜</span>
-        <dv-scroll-ranking-board :config="ranking" style="height:2.75rem" />
+        <span class="fs-xl text mx-2 mb-1">电梯运行状态</span>
+        <dv-scroll-ranking-board :config="ranking" style="height:2.75rem"/>
       </div>
       <div class="percent">
         <div class="item bg-color-black">
-          <span>今日任务通过率</span>
-          <CenterChart :id="rate[0].id" :tips="rate[0].tips" :colorObj="rate[0].colorData" />
+          <span>正常</span>
+          <CenterChart :id="rate[0].id" :tips="rate[0].tips" :colorObj="rate[0].colorData"/>
         </div>
         <div class="item bg-color-black">
-          <span>今日任务达标率</span>
-          <CenterChart :id="rate[1].id" :tips="rate[1].tips" :colorObj="rate[1].colorData" />
+          <span>离线</span>
+          <CenterChart :id="rate[1].id" :tips="rate[1].tips" :colorObj="rate[1].colorData"/>
         </div>
         <div class="water">
-          <dv-water-level-pond :config="water" style="height: 1.5rem" />
+          <dv-water-level-pond :config="water" style="height: 1.5rem"/>
         </div>
       </div>
     </div>
@@ -37,56 +37,32 @@
 import CenterChart from "@/components/echart/center/centerChartRate";
 
 export default {
-  data () {
+  data() {
     return {
       titleItem: [
         {
-          title: "今年累计任务建次数",
-          number: {
-            number: [120],
-            toFixed: 1,
-            content: "{nt}"
-          }
+          title: "电梯编号",
+            number: [this.$store.state.eleno],
         },
         {
-          title: "本月累计任务次数",
-          number: {
-            number: [18],
-            toFixed: 1,
-            content: "{nt}"
-          }
+          title: "电梯所在楼层",
+            number: [this.$store.state.floor],
         },
         {
-          title: "今日累计任务次数",
-          number: {
-            number: [2],
-            toFixed: 1,
-            content: "{nt}"
-          }
+          title: "开关门状态",
+            number: [this.$store.state.isOpen],
         },
         {
-          title: "今年失败任务次数",
-          number: {
-            number: [14],
-            toFixed: 1,
-            content: "{nt}"
-          }
+          title: "运行状态",
+            number: [this.$store.state.runMileage],
         },
         {
-          title: "今年成功任务次数",
-          number: {
-            number: [106],
-            toFixed: 1,
-            content: "{nt}"
-          }
+          title: "运行里程",
+            number: [this.$store.state.direction],
         },
         {
-          title: "今年达标任务个数",
-          number: {
-            number: [100],
-            toFixed: 1,
-            content: "{nt}"
-          }
+          title: "是否检修",
+            number: ["已检修"],
         }
       ],
       ranking: {
@@ -145,7 +121,7 @@ export default {
       rate: [
         {
           id: "centerRate1",
-          tips: 60,
+          tips: 100,
           colorData: {
             textStyle: "#3fc0fb",
             series: {
@@ -159,7 +135,7 @@ export default {
         },
         {
           id: "centerRate2",
-          tips: 40,
+          tips: 0,
           colorData: {
             textStyle: "#67e0e3",
             series: {
@@ -178,19 +154,43 @@ export default {
     CenterChart
     // centerChart1,
     // centerChart2
+  },
+  watch: {
+    '$store.state.eleno': function () {
+      this.titleItem[0].number = this.$store.state.eleno
+  },
+  '$store.state.floor': function () {
+    //你需要执行的代码
+    this.titleItem[1].number = this.$store.state.floor
+  },
+  '$store.state.isOpen': function () {
+    //你需要执行的代码
+    this.titleItem[2].number= this.$store.state.isOpen
+  },
+  '$store.state.runMileage': function () {
+    //你需要执行的代码
+    this.titleItem[3].number= this.$store.state.runMileage
+  },
+  '$store.state.direction': function () {
+    //你需要执行的代码
+    this.titleItem[4].number= this.$store.state.direction
   }
-};
+}
+}
+;
 </script>
 
 <style lang="scss" scoped>
 #center {
   display: flex;
   flex-direction: column;
+
   .up {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+
     .item {
       border-radius: 0.0625rem;
       padding-top: 0.2rem;
@@ -199,6 +199,7 @@ export default {
       height: 0.875rem;
     }
   }
+
   .down {
     padding: 0.07rem 0.05rem;
     padding-bottom: 0;
@@ -206,26 +207,32 @@ export default {
     display: flex;
     height: 3.1875rem;
     justify-content: space-between;
+
     .bg-color-black {
       border-radius: 0.0625rem;
     }
+
     .ranking {
       padding: 0.125rem;
       width: 59%;
     }
+
     .percent {
       width: 40%;
       display: flex;
       flex-wrap: wrap;
+
       .item {
         width: 50%;
         height: 1.5rem;
+
         span {
           margin-top: 0.0875rem;
           display: flex;
           justify-content: center;
         }
       }
+
       .water {
         width: 100%;
       }

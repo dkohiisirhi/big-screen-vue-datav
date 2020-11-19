@@ -6,17 +6,19 @@
           <icon name="chart-line"></icon>
         </span>
         <div class="d-flex">
-          <span class="fs-xl text mx-2">任务完成排行榜</span>
+          <span class="fs-xl text mx-2">电梯列表</span>
         </div>
       </div>
       <div class="d-flex jc-center body-box">
-        <dv-scroll-board :config="config" style="width:8.775rem;height:4.28rem"/>
+        <dv-scroll-board :config="config" style="width:8.775rem;height:4.28rem" @click="row"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import store from "@/store";
+
 export default {
   data() {
     return {
@@ -39,6 +41,15 @@ export default {
     this.init()
   },
   methods: {
+    row: function (row) {
+      console.log("点击")
+      this.$store.commit('eleno',row.row[0])
+      this.$store.commit('floor',row.row[1])
+      this.$store.commit('isOpen',row.row[2])
+      this.$store.commit('runMileage',row.row[4])
+      this.$store.commit('direction',row.row[6])
+      console.log(this.$store.state.eleno)
+    },
     init: function () {
       if(typeof(WebSocket) === "undefined"){
         alert("您的浏览器不支持socket")
@@ -55,18 +66,19 @@ export default {
     },
     open: function () {
       console.log("success")
-      setTimeout(()=> {
-        this.socket.send('check')
-      }, 1000);
-
+      this.socket.send('check')
     },
     error: function () {
       console.log("连接错误")
     },
     getMessage: function(msg) {
       let arr = new Array();
-      JSON.parse(msg.data).forEach(item=> arr.push([item.eleno,item.floor,item.isOpen==1?'开门':'关门',item.speed,item.runMileage,item.openNum,item.direction==1?'上行':item.direction==0?'平层':'下行',item.floorsStopsDoor]))
+      JSON.parse(msg.data).forEach(item=> arr.push([item.eleno,item.floor,item.isOpen,item.speed,item.runMileage,item.openNum,item.direction,item.floorsStopsDoor]))
+      this.$delete(this.config,"data")
       this.$set(this.config,"data",arr)
+      setTimeout(()=> {
+        this.socket.send('check')
+      }, 1000)
     },
     close: function () {
       console.log("socket已经关闭")
