@@ -53,11 +53,11 @@ export default {
             number: [this.$store.state.isOpen],
         },
         {
-          title: "运行状态",
+          title: "运行里程",
             number: [this.$store.state.runMileage],
         },
         {
-          title: "运行里程",
+          title: "运行状态",
             number: [this.$store.state.direction],
         },
         {
@@ -141,7 +141,7 @@ export default {
             series: {
               color: ["#faf3a378", "transparent"],
               dataColor: {
-                normal: "#ff9800",
+                normal: "#ff0000",
                 shadowColor: "#fcebad"
               }
             }
@@ -158,26 +158,32 @@ export default {
   watch: {
     '$store.state.eleno': function () {
       this.titleItem[0].number = this.$store.state.eleno
-  },
-  '$store.state.floor': function () {
-    //你需要执行的代码
-    this.titleItem[1].number = this.$store.state.floor
-  },
-  '$store.state.isOpen': function () {
-    //你需要执行的代码
-    this.titleItem[2].number= this.$store.state.isOpen
-  },
-  '$store.state.runMileage': function () {
-    //你需要执行的代码
-    this.titleItem[3].number= this.$store.state.runMileage
-  },
-  '$store.state.direction': function () {
-    //你需要执行的代码
-    this.titleItem[4].number= this.$store.state.direction
+    },
+    '$store.state.floor': function () {
+      //你需要执行的代码
+      this.titleItem[1].number = this.$store.state.floor
+      if (this.$store.state.floor == "已离线") {
+        this.rate[0].tips = 0;
+        this.rate[1].tips = 100;
+      } else {
+        this.rate[1].tips = 0;
+        this.rate[0].tips = 100;
+      }
+    },
+    '$store.state.isOpen': function () {
+      //你需要执行的代码
+      this.titleItem[2].number = this.$store.state.isOpen
+    },
+    '$store.state.runMileage': function () {
+      //你需要执行的代码
+      this.titleItem[3].number = this.$store.state.runMileage
+    },
+    '$store.state.direction': function () {
+      //你需要执行的代码
+      this.titleItem[4].number = this.$store.state.direction
+    }
   }
-}
-}
-;
+};
 </script>
 
 <style lang="scss" scoped>

@@ -22,13 +22,13 @@ export default {
   data() {
     return {
       config: {
-        header: ["电梯编号", "楼层", "是否开门","运行速度","运行里程","开门次数","状态","层/站"],
+        header: ["电梯编号", "设备名称", "电梯型号","电梯品牌","载重","楼盘名称","维保公司","上次维保时间"],
         rowNum: 7, //表格行数
         headerHeight: 35,
         headerBGC: "#0f1325", //表头
         oddRowBGC: "#0f1325", //奇数行
         evenRowBGC: "#171c33", //偶数行
-        columnWidth: [120,70,90,90,90,90,70,70],
+        columnWidth: [120,70,90,90,55,90,90,90],
         align: ["center"],
       },
       path:"ws://www.cloudelevator.net:8085/websock/test",
@@ -43,27 +43,23 @@ export default {
     row: function (row) {
       console.log("点击")
       this.$store.commit('eleno',row.row[0])
-      this.$store.commit('floor',row.row[1])
-      this.$store.commit('isOpen',row.row[2])
-      this.$store.commit('runMileage',row.row[4])
-      this.$store.commit('direction',row.row[6])
-      console.log(this.$store.state.eleno)
+      this.socket.send(row.row[0])
     },
     init: function () {
       this.$axios({
-        url: "http://localhost/elevators",
+        url: "http://www.cloudelevator.net:8085/elevators",
         method: "get"
       }).then(res => {
         console.log(res)
         let arr = new Array();
-        JSON.parse(res.data).forEach(item=> arr.push([item.eleno,item.floor,item.isOpen,item.speed,item.runMileage,item.openNum,item.direction,item.floorsStopsDoor]))
+        res.data.data.forEach(item=> arr.push([item.eleno,item.dname,item.model,item.brand,item.rload,item.eleProject,item.maintain,item.lasttime]))
         this.$delete(this.config,"data")
         this.$set(this.config,"data",arr)
-        this.$store.commit('eleno',res.data[0].eleno)
-        this.$store.commit('floor',res.data[0].floor)
-        this.$store.commit('isOpen',res.data[0].isOpen)
-        this.$store.commit('runMileage',res.data[0].runMileage)
-        this.$store.commit('direction',res.data[0].direction)
+        this.$store.commit('eleno',res.data.data[0].eleno)
+        this.$store.commit('floor',res.data.data[0].floor)
+        this.$store.commit('isOpen',res.data.data[0].isOpen)
+        this.$store.commit('runMileage',res.data.data[0].runMileage)
+        this.$store.commit('direction',res.data.data[0].direction)
       })
       if(typeof(WebSocket) === "undefined"){
         alert("您的浏览器不支持socket")
@@ -86,11 +82,15 @@ export default {
       console.log("连接错误")
     },
     getMessage: function(msg) {
-      this.$store.commit('floor',msg.data.floor)
-      this.$store.commit('isOpen',msg.data.isOpen)
-      this.$store.commit('runMileage',msg.data.runMileage)
-      this.$store.commit('direction',msg.data.direction)
+      console.log(msg)
+      let s=JSON.parse(msg.data)
+      this.$store.commit('floor',s.floor)
+      this.$store.commit('isOpen',s.isOpen)
+      this.$store.commit('runMileage',s.runMileage)
+      this.$store.commit('direction',s.direction)
+     // console.log(this.$store.state.eleno)
       setTimeout(()=> {
+        console.log(this.$store.state.eleno)
         this.socket.send(this.$store.state.eleno)
       }, 1000)
     },
