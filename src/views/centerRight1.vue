@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import store from "@/store";
 
 export default {
   data() {
@@ -51,6 +50,21 @@ export default {
       console.log(this.$store.state.eleno)
     },
     init: function () {
+      this.$axios({
+        url: "http://localhost/elevators",
+        method: "get"
+      }).then(res => {
+        console.log(res)
+        let arr = new Array();
+        JSON.parse(res.data).forEach(item=> arr.push([item.eleno,item.floor,item.isOpen,item.speed,item.runMileage,item.openNum,item.direction,item.floorsStopsDoor]))
+        this.$delete(this.config,"data")
+        this.$set(this.config,"data",arr)
+        this.$store.commit('eleno',res.data[0].eleno)
+        this.$store.commit('floor',res.data[0].floor)
+        this.$store.commit('isOpen',res.data[0].isOpen)
+        this.$store.commit('runMileage',res.data[0].runMileage)
+        this.$store.commit('direction',res.data[0].direction)
+      })
       if(typeof(WebSocket) === "undefined"){
         alert("您的浏览器不支持socket")
       }else{
@@ -72,12 +86,12 @@ export default {
       console.log("连接错误")
     },
     getMessage: function(msg) {
-      let arr = new Array();
-      JSON.parse(msg.data).forEach(item=> arr.push([item.eleno,item.floor,item.isOpen,item.speed,item.runMileage,item.openNum,item.direction,item.floorsStopsDoor]))
-      this.$delete(this.config,"data")
-      this.$set(this.config,"data",arr)
+      this.$store.commit('floor',msg.data.floor)
+      this.$store.commit('isOpen',msg.data.isOpen)
+      this.$store.commit('runMileage',msg.data.runMileage)
+      this.$store.commit('direction',msg.data.direction)
       setTimeout(()=> {
-        this.socket.send('check')
+        this.socket.send(this.$store.state.eleno)
       }, 1000)
     },
     close: function () {

@@ -12,7 +12,8 @@ import 'vue-awesome/icons/chart-area.js';
 import 'vue-awesome/icons/chart-pie.js';
 import 'vue-awesome/icons/chart-line.js';
 import 'vue-awesome/icons/align-left.js';
-
+import axios from 'axios'
+Vue.prototype.$axios = axios
 // 全局注册图标
 Vue.component('icon', Icon);
 
