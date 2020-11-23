@@ -42,27 +42,27 @@ export default {
       titleItem: [
         {
           title: "电梯编号",
-            number: [this.$store.state.eleno],
+            number: this.$store.state.eleno,
         },
         {
           title: "电梯所在楼层",
-            number: [this.$store.state.floor],
+            number: this.$store.state.floor,
         },
         {
           title: "开关门状态",
-            number: [this.$store.state.isOpen],
+            number: this.$store.state.isOpen,
         },
         {
           title: "运行里程",
-            number: [this.$store.state.runMileage],
+            number: this.$store.state.runMileage,
         },
         {
           title: "运行状态",
-            number: [this.$store.state.direction],
+            number: this.$store.state.direction,
         },
         {
           title: "是否检修",
-            number: ["已检修"],
+            number: this.$store.state.check,
         }
       ],
       ranking: {

@@ -41,7 +41,6 @@ export default {
   },
   methods: {
     row: function (row) {
-      console.log("点击")
       this.$store.commit('eleno',row.row[0])
       this.socket.send(row.row[0])
     },
@@ -50,7 +49,6 @@ export default {
         url: "http://www.cloudelevator.net:8085/elevators",
         method: "get"
       }).then(res => {
-        console.log(res)
         let arr = new Array();
         res.data.data.forEach(item=> arr.push([item.eleno,item.dname,item.model,item.brand,item.rload,item.eleProject,item.maintain,item.lasttime]))
         this.$delete(this.config,"data")
@@ -82,7 +80,6 @@ export default {
       console.log("连接错误")
     },
     getMessage: function(msg) {
-      console.log(msg)
       let s=JSON.parse(msg.data)
       this.$store.commit('floor',s.floor)
       this.$store.commit('isOpen',s.isOpen)
@@ -90,7 +87,6 @@ export default {
       this.$store.commit('direction',s.direction)
      // console.log(this.$store.state.eleno)
       setTimeout(()=> {
-        console.log(this.$store.state.eleno)
         this.socket.send(this.$store.state.eleno)
       }, 1000)
     },

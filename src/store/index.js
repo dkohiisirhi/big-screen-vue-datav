@@ -9,7 +9,8 @@ export default new Vuex.Store({
     floor:0,
     isOpen:0,
     runMileage:0,
-    direction:0
+    direction:0,
+    check:"已检修212",
   },
   mutations: {
     //es6语法，等同edit:funcion(){...}
