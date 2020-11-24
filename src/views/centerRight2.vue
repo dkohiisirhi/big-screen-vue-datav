@@ -8,49 +8,42 @@
         <span class="fs-xl text mx-2">产品销售渠道分析</span>
       </div>
       <div class="d-flex jc-center body-box" style=" margin-top: 0;">
-        <dv-capsule-chart :config="config" style="width: 100%;height:2rem" />
-        <!-- ---------------------------------------- -->
-        <centreRight2Chart1 />
+        <dv-capsule-chart :config="config" style="width: 100%;max-height:4.6rem"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import centreRight2Chart1 from "@/components/echart/centerRight/centerRightChart";
-
 export default {
   data() {
     return {
-      config: {
-        data: [
-          {
-            name: "南阳",
-            value: 167
-          },
-          {
-            name: "周口",
-            value: 67
-          },
-          {
-            name: "漯河",
-            value: 123
-          },
-          {
-            name: "郑州",
-            value: 55
-          },
-          {
-            name: "西峡",
-            value: 98
-          }
-        ]
-      }
+      config: {}
     };
   },
-  components: { centreRight2Chart1 },
-  mounted() {},
-  methods: {}
+  components: {},
+  mounted() {
+  },
+  created() {
+    this.init()
+  },
+  methods: {
+    init() {
+      this.$axios({
+        url: "http://www.cloudelevator.net:8085/elevator/brands",
+        method: "get"
+      }).then(res => {
+        let arr = new Array()
+        res.data.forEach((item, index) => {
+          arr.push({
+            name: item.brand,
+            value: item.con
+          })
+        })
+        this.$set(this.config, "data", arr);
+      })
+    }
+  }
 };
 </script>
 
@@ -60,14 +53,17 @@ export default {
   height: 5rem;
   min-width: 3.75rem;
   border-radius: 0.0625rem;
+
   .bg-color-black {
     padding: 0.0625rem;
     height: 5.0625rem;
     border-radius: 0.125rem;
   }
+
   .text {
     color: #c3cbde;
   }
+
   .body-box {
     border-radius: 0.125rem;
     overflow: hidden;

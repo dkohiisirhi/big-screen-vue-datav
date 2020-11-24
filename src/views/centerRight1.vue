@@ -29,6 +29,7 @@ export default {
         oddRowBGC: "#0f1325", //奇数行
         evenRowBGC: "#171c33", //偶数行
         columnWidth: [120,70,90,90,55,90,90,90],
+        carousel: 'page',
         align: ["center"],
       },
       path:"ws://www.cloudelevator.net:8085/websock/test",

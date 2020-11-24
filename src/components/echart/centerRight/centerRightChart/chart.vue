@@ -41,7 +41,7 @@ export default {
           radar: {
             indicator: newData.indicatorData,
             shape: "circle",
-            splitNumber: 5,
+            splitNumber: 10,
             name: {
               textStyle: {
                 color: "rgb(238, 197, 102)"
@@ -50,6 +50,12 @@ export default {
             splitLine: {
               lineStyle: {
                 color: [
+                  "rgba(238, 197, 102, 0.1)",
+                  "rgba(238, 197, 102, 0.2)",
+                  "rgba(238, 197, 102, 0.4)",
+                  "rgba(238, 197, 102, 0.6)",
+                  "rgba(238, 197, 102, 0.8)",
+                  "rgba(238, 197, 102, 1)",
                   "rgba(238, 197, 102, 0.1)",
                   "rgba(238, 197, 102, 0.2)",
                   "rgba(238, 197, 102, 0.4)",

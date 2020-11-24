@@ -8,7 +8,7 @@
           <div class="d-flex jc-center">
             <dv-decoration-8 :color="['#568aea', '#000000']" style="width:2.5rem;height:.625rem;" />
             <div class="title">
-              <span class="title-text">大数据可视化平台</span>
+              <span class="title-text">电梯数据可视化平台</span>
               <dv-decoration-6
                 class="title-bototm"
                 :reverse="true"
@@ -65,20 +65,21 @@
             <div>
               <center />
             </div>
-            <!-- 中间 -->
-<!--            <div>-->
-<!--              <centerRight2 />-->
-<!--            </div>-->
             <div>
               <dv-border-box-12>
                 <centerLeft1 />
               </dv-border-box-12>
             </div>
+            <!-- 中间 -->
             <div>
-              <dv-border-box-12>
-                <centerLeft2 />
-              </dv-border-box-12>
+              <centerRight2 />
             </div>
+
+<!--            <div>-->
+<!--              <dv-border-box-12>-->
+<!--                <centerLeft2 />-->
+<!--              </dv-border-box-12>-->
+<!--            </div>-->
           </div>
 
           <!-- 第四行数据 -->
@@ -117,9 +118,9 @@ export default {
   },
   components: {
     centerLeft1,
-    centerLeft2,
+    // centerLeft2,
     centerRight1,
-    // centerRight2,
+    centerRight2,
     center,
     bottomLeft,
     bottomRight

@@ -3,6 +3,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import dataV from '@jiaminghi/data-view';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(dataV);
 
 // 按需引入vue-awesome图标
@@ -16,7 +18,7 @@ import axios from 'axios'
 Vue.prototype.$axios = axios
 // 全局注册图标
 Vue.component('icon', Icon);
-
+Vue.use(ElementUI);
 // 适配flex
 import '@/common/flexible.js';
 
