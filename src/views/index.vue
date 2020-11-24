@@ -72,14 +72,11 @@
             </div>
             <!-- 中间 -->
             <div>
+              <dv-border-box-12>
               <centerRight2 />
+              </dv-border-box-12>
             </div>
 
-<!--            <div>-->
-<!--              <dv-border-box-12>-->
-<!--                <centerLeft2 />-->
-<!--              </dv-border-box-12>-->
-<!--            </div>-->
           </div>
 
           <!-- 第四行数据 -->
