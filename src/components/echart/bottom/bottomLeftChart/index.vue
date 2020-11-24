@@ -11,109 +11,13 @@ export default {
     return {
       cdata: {
         category: [
-          "市区",
-          "万州",
-          "江北",
-          "南岸",
-          "北碚",
-          "綦南",
-          "长寿",
-          "永川",
-          "璧山",
-          "江津",
-          "城口",
-          "大足",
-          "垫江",
-          "丰都",
-          "奉节",
-          "合川",
-          "江津区",
-          "开州",
-          "南川",
-          "彭水",
-          "黔江",
-          "石柱",
-          "铜梁",
-          "潼南",
-          "巫山",
-          "巫溪",
-          "武隆",
-          "秀山",
-          "酉阳",
-          "云阳",
-          "忠县",
-          "川东",
-          "检修"
+
         ],
         lineData: [
-          18092,
-          20728,
-          24045,
-          28348,
-          32808,
-          36097,
-          39867,
-          44715,
-          48444,
-          50415,
-          56061,
-          62677,
-          59521,
-          67560,
-          18092,
-          20728,
-          24045,
-          28348,
-          32808,
-          36097,
-          39867,
-          44715,
-          48444,
-          50415,
-          36097,
-          39867,
-          44715,
-          48444,
-          50415,
-          50061,
-          32677,
-          49521,
-          32808
+
         ],
         barData: [
-          4600,
-          5000,
-          5500,
-          6500,
-          7500,
-          8500,
-          9900,
-          12500,
-          14000,
-          21500,
-          23200,
-          24450,
-          25250,
-          33300,
-          4600,
-          5000,
-          5500,
-          6500,
-          7500,
-          8500,
-          9900,
-          22500,
-          14000,
-          21500,
-          8500,
-          9900,
-          12500,
-          14000,
-          21500,
-          23200,
-          24450,
-          25250,
-          7500
+
         ],
         rateData: []
       }
@@ -123,17 +27,63 @@ export default {
     Chart,
   },
   mounted () {
-    this.setData();
   },
   methods: {
     // 根据自己的业务情况修改
     setData () {
+      let all = this.cdata.lineData.reduce(function(previousValue, currentValue){
+        return Number(previousValue) + Number(currentValue);
+      });
       for (let i = 0; i < this.cdata.barData.length -1; i++) {
-        let rate = this.cdata.barData[i] / this.cdata.lineData[i];
+        let rate = this.cdata.barData[i] / all;
         this.cdata.rateData.push(rate.toFixed(2));
       }
     },
+    //获取里程数
+    init(){
+        if(typeof(WebSocket) === "undefined"){
+          alert("您的浏览器不支持socket")
+        }else{
+          // 实例化socket
+          this.socket = new WebSocket("ws://www.cloudelevator.net:8085/websock/runMileage")
+          // 监听socket连接
+          this.socket.onopen = this.open
+          // 监听socket错误信息
+          this.socket.onerror = this.error
+          // 监听socket消息
+          this.socket.onmessage = this.getMessage
+        }
+    },
+    open: function () {
+      console.log("success")
+      this.socket.send("")
+    },
+    error: function () {
+      console.log("连接错误")
+    },
+    getMessage: function(msg) {
+      let data = JSON.parse(msg.data)
+      this.cdata.category = []
+      this.cdata.lineData = []
+      this.cdata.barData = []
+      data.forEach(item=>{
+        this.cdata.category.push(item.eleno);
+        this.cdata.lineData.push(item.runMileage == "null"?"0":item.runMileage);
+        this.cdata.barData.push(item.runMileage == "null"?"0":item.runMileage)
+      })
+      this.setData()
+      setTimeout(()=> {
+        this.socket.send("")
+      }, 10000)
+    },
+    close: function () {
+      console.log("socket已经关闭")
+    }
+  },
+  created() {
+    this.init()
   }
+
 };
 </script>
 
