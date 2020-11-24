@@ -1,11 +1,11 @@
 import request from '../utils/request';
 
 /**
- * 获取电梯列表
+ * 获取电梯检修
  */
-export const getElevators=()=>{
+export const getElevatorIsOnline=()=>{
     return request({
-        url:"/elevators",
+        url:"/elevator/isonline",
         method:'post',
     })
 }

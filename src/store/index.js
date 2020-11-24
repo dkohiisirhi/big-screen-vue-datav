@@ -10,7 +10,11 @@ export default new Vuex.Store({
     isOpen:0,
     runMileage:0,
     direction:0,
-    check:"已检修212",
+    check:"已检修",
+    size:0,
+    online:0,
+    notonline:0,
+    notper:0
   },
   mutations: {
     //es6语法，等同edit:funcion(){...}
@@ -28,6 +32,18 @@ export default new Vuex.Store({
     },
     direction(state,p) {
       state.direction = p
+    },
+    size(state,p) {
+      state.size = p
+    },
+    online(state,p) {
+      state.online = p
+    },
+    notonline(state,p) {
+      state.notonline = p
+    },
+    notper(state,p) {
+      state.notper = p
     }
   },
   actions: {

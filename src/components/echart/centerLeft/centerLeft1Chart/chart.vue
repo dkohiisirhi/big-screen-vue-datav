@@ -31,14 +31,8 @@ export default {
       handler (newData) {
         this.options = {
           color: [
-            "#37a2da",
-            "#32c5e9",
-            "#9fe6b8",
-            "#ffdb5c",
-            "#ff9f7f",
-            "#fb7293",
-            "#e7bcf3",
-            "#8378ea"
+            "#ff0000",
+            "#37a2da"
           ],
           tooltip: {
             trigger: "item",
@@ -60,10 +54,9 @@ export default {
           },
           series: [
             {
-              name: "通过率统计",
+              name: "电梯状态统计",
               type: "pie",
               radius: [10, 60],
-              roseType: "area",
               center: ["50%", "40%"],
               data: newData.seriesData
             }

@@ -10,14 +10,10 @@ export default {
   data () {
     return {
       cdata: {
-        xData: ["rose1", "rose2", "rose3", "rose4", "rose5", "rose6"],
+        xData: ["在线","离线", ],
         seriesData: [
-          { value: 10, name: "rose1" },
-          { value: 5, name: "rose2" },
-          { value: 15, name: "rose3" },
-          { value: 25, name: "rose4" },
-          { value: 20, name: "rose5" },
-          { value: 35, name: "rose6" }
+          { value: this.$store.state.notonline, name: "离线" },
+          { value: this.$store.state.online, name: "在线" }
         ]
       }
     }
@@ -28,6 +24,15 @@ export default {
   mounted () {
   },
   methods: {
+  },
+  watch: {
+    '$store.state.notonline': function () {
+      //你需要执行的代码
+      this.cdata.seriesData[0].value = this.$store.state.notonline
+    },
+    '$store.state.online': function () {
+      //你需要执行的代码
+      this.cdata.seriesData[1].value = this.$store.state.online   }
   }
 }
 </script>

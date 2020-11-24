@@ -17,12 +17,10 @@
       <div class="bottom-data">
         <div class="item-box" v-for="(item,index) in numberData" :key="index">
           <div class="d-flex">
-            <span class="coin">￥</span>
             <dv-digital-flop :config="item.number" style="width:2.5rem;height:.625rem;"/>
           </div>
           <p class="text" style="text-align: center;">
             {{item.text}}
-            <span class="colorYellow">(件)</span>
           </p>
         </div>
       </div>
@@ -40,82 +38,64 @@ export default {
         activeRadius: "80%",
         radius: "75%",
         activeTimeGap: 2000,
-        data: [
-          {
-            name: "周口",
-            value: 55
-          },
-          {
-            name: "南阳",
-            value: 120
-          },
-          {
-            name: "西峡",
-            value: 78
-          },
-          {
-            name: "驻马店",
-            value: 66
-          },
-          {
-            name: "新乡",
-            value: 80
-          }
-        ]
       },
-      numberData: [
-        {
-          number: {
-            number: [15],
-            toFixed: 1,
-            content: "{nt}"
-          },
-          text: "今日构建总量"
-        },
-        {
-          number: {
-            number: [1144],
-            toFixed: 1,
-            content: "{nt}"
-          },
-          text: "总共完成数量"
-        },
-        {
-          number: {
-            number: [361],
-            toFixed: 1,
-            content: "{nt}"
-          },
-          text: "正在编译数量"
-        },
-        {
-          number: {
-            number: [157],
-            toFixed: 1,
-            content: "{nt}"
-          },
-          text: "未通过数量"
-        }
-      ]
+      numberData:[]
     };
   },
   components: {
     CentreLeft1Chart
   },
   mounted() {
-    this.changeTiming();
+  },
+  created() {
+    this.init()
   },
   methods: {
-    changeTiming() {
-      setInterval(() => {
-        this.changeNumber();
-      }, 3000);
-    },
-    changeNumber() {
-      this.numberData.forEach((item, index) => {
-        item.number.number[0] += ++index;
-        item.number = { ...item.number };
-      });
+    init(){
+      this.$axios({
+        url: "http://www.cloudelevator.net:8085/elevator/isonline",
+        method: "post"
+      }).then(res => {
+        this.$store.commit('size',res.data.size)
+        this.$store.commit('online',res.data.online)
+        this.$store.commit('notonline',res.data.notonline)
+        let s=(res.data.notonline/res.data.size)*100
+        this.$store.commit('notper',s)
+        this.numberData =  [
+          {
+            number: {
+              number: [res.data.online],
+              toFixed: 0,
+              content: "{nt}"
+            },
+            text: "电梯在线数量"
+          },
+          {
+            number: {
+              number: [res.data.size],
+              toFixed: 0,
+              content: "{nt}"
+            },
+            text: "总电梯数"
+          },
+          {
+            number: {
+              number: [res.data.notonline],
+              toFixed: 0,
+              content: "{nt}"
+            },
+            text: "电梯离线数"
+          },
+          {
+            number: {
+              number: [s],
+              toFixed: 2,
+              content: "{nt}"
+            },
+            text: "离线比例(%)"
+          }
+        ]
+      })
     }
   }
 };

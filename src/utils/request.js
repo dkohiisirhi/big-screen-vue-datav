@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { MessageBox } from 'element-ui';
-import Vue from 'vue'
 
 
 const service = axios.create({

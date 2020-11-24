@@ -44,7 +44,7 @@ export default {
       this.$store.commit('eleno',row.row[0])
       this.socket.send(row.row[0])
     },
-    init: function () {
+    init: function (){
       this.$axios({
         url: "http://www.cloudelevator.net:8085/elevators",
         method: "get"
