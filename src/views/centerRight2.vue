@@ -2,15 +2,15 @@
   <div id="centreRight2">
     <div class="bg-color-black">
       <div class="d-flex pt-2 pl-2">
+        <div class="ranking">
         <span style="color:#5cd9e8">
           <icon name="align-left"></icon>
         </span>
-        <span class="fs-xl text mx-2">各品牌电梯销量图</span>
-      </div>
-      <div class="d-flex jc-center body-box" style="margin-top: 0">
-        <dv-capsule-chart :config="config" style="width: 100%;max-height:4.6rem"/>
-      </div>
+          <span class="fs-xl text mx-2 mb-1">电梯运行状态</span>
+          <dv-scroll-ranking-board :config="ranking" style="height:4.5rem;width: 4rem"/>
+        </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -18,8 +18,10 @@
 export default {
   data() {
     return {
-      config: {
-        unit:"台"
+      ranking: {
+        carousel: "single",
+        unit: "台",
+        rowNum:7,
       }
     };
   },
@@ -42,7 +44,7 @@ export default {
             value: item.con
           })
         })
-        this.$set(this.config, "data", arr);
+         this.$set(this.ranking, "data", arr);
       })
     }
   }
@@ -58,7 +60,7 @@ export default {
 
   .bg-color-black {
     padding: 0.0625rem;
-    height: 5.0625rem;
+    //height: 5rem;
     border-radius: 0.125rem;
   }
 

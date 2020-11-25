@@ -78,7 +78,8 @@ export default {
       this.socket.send('check')
     },
     error: function () {
-      console.log("连接错误")
+      alert("连接错误,从新连接中")
+      this.socket = new WebSocket(this.path)
     },
     getMessage: function(msg) {
       let s=JSON.parse(msg.data)
