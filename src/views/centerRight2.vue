@@ -6,7 +6,7 @@
         <span style="color:#5cd9e8">
           <icon name="align-left"></icon>
         </span>
-          <span class="fs-xl text mx-2 mb-1">电梯运行状态</span>
+          <span class="fs-xl text mx-2 mb-1">电梯品牌销量排行</span>
           <dv-scroll-ranking-board :config="ranking" style="height:4.5rem;width: 4rem"/>
         </div>
     </div>

@@ -35,7 +35,6 @@
 
 <script>
 import CenterChart from "@/components/echart/center/centerChartRate";
-
 export default {
   data() {
     return {
@@ -152,8 +151,6 @@ export default {
   },
   components: {
     CenterChart
-    // centerChart1,
-    // centerChart2
   },
   watch: {
     '$store.state.eleno': function () {
